@@ -1,0 +1,104 @@
+Problem:
+    Given a list of strings, return a new list where the strings are sorted
+    based on the highest number of adjacent consonants a string contains.
+    If two strings contain the same highest number of adjacent consonants,
+    they should retain their original order in relation to each other.
+    Consonants are considered adjacent if they are next to each other in the
+    same word or if there is a space between two consonants in adjacent words.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Step 1: Understand the Problem
+- Must sort strings in order of the largest run of adjacent consonants
+- Consonants are adjacent if they are in subsequent string indices
+    - Treat the string as if spaces are not there
+- If two strings have an equally large run of adjacent consonants
+    they keep the same ordering relative to each other.
+- IMPLIED: do not mutate original list
+- IMPLIED: a single consonant is 0 adjacent consonants
+
+input: List of strings
+output: New sorted list
+
+Clarifications:
+- What to do about non-alphabetical characters besides spaces?
+- Should the program treat runs of multiple whitespaces the same as a single space?
+- What about other whitespace characters like "\t"?
+- Strings with multiple words are allowed, are single-word
+    strings allowed too? What about empty strings?
+    - If empty strings are allowed, are they treated the same as a
+        non-empty string with no adjacent consonants?
+- Are strings sorted in ascending or descending order?;
+    I assume left-to-right, or in other words descending.
+- Does case matter?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Step 2: Examples and Test Cases
+
+Provided by the problem:
+    my_list = ['aa', 'baa', 'ccaa', 'dddaa']
+    print(sort_by_consonant_count(my_list))
+    # ['dddaa', 'ccaa', 'aa', 'baa']
+    
+    my_list = ['can can', 'toucan', 'batman', 'salt pan']
+    print(sort_by_consonant_count(my_list))
+    # ['salt pan', 'can can', 'batman', 'toucan']
+    
+    my_list = ['bar', 'car', 'far', 'jar']
+    print(sort_by_consonant_count(my_list))
+    # ['bar', 'car', 'far', 'jar']
+    
+    my_list = ['day', 'week', 'month', 'year']
+    print(sort_by_consonant_count(my_list))
+    # ['month', 'day', 'week', 'year']
+    
+    my_list = ['xxxa', 'xxxx', 'xxxb']
+    print(sort_by_consonant_count(my_list))
+    # ['xxxx', 'xxxb', 'xxxa']
+
+Notes:
+- Examples include only lower-case alphabetical characters and single whitespaces
+- Examples include both multiple-word strings and single-word strings
+- No example with an empty string.
+- Strings are sorted left-to-right, like I assumed.
+- Examples include only lower-case characters, input may be sanitized with .lower()
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Step 3: Data Structures
+- A collection of some kind is required both for the input and output.
+- Some kind of intermediary collection may be helpful for generating the output.
+- Checking if a character is a consonant can be done
+    partially with the help of string methods like .isalpha(),
+    but a collection of correct (or incorrect) letters may be
+    helpful, since we can check for membership.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Step 4: Algorithm
+- Create a collection to contain strings the user wants to compare
+- Collect a string from the user
+    - Use a helper function to check that input is well-sanitized
+    - Add the string to the collection
+    - Ask if the user is done, and collect input as many times as needed
+- Initialize a new collection to keep track of the longest run 
+    of adjacent consonants in each string the user provided
+    - Determine the longest run of adjacent consonants in each string
+    - Store that number as a part of this collection
+    - After done creating the numbers, sort this collection
+- Initialize final output collection
+- Use intermediary collection to determine what order to
+    put the input objects into the output collection.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Step 5:Implement a Solution in Code
+- Input stored in a user_strings list
+- Create length_of_runs list to store the longest run of consonants in each string
+- Iterate through user_strings using a for loop
+    - Each iteration find the longest run in the string for
+        that index, and store that number in length_of_runs
+    - length_of_runs items should have indices corresponding to the
+        items of user_strings used to generate them, due to
+        the ordered nature of the iteration
