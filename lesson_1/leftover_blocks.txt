@@ -1,0 +1,82 @@
+Problem:
+    Write a program that, given the number of available blocks,
+    calculates the number of blocks left over after building
+    the tallest possible valid structure.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Step 1: Understand the Problem
+- Building blocks are being used to construct a tower
+- The top level is 1 block
+- Blocks not on the lowest level are supported by 4 blocks on the level below
+- A single block can support multiple blocks on a higher level
+- There are no gaps between the blocks
+- The tallest possible tower must be built
+- A new level is not constructed unless there are enough
+    blocks to completely support the level above it
+- If there are blocks that cannot be used because a new level needs
+    more blocks than remain, these are the "leftover" blocks
+- The simplest way to construct a layer below the first layer
+    is like an expanding square pyramid: a block at each
+    corner of each block in the layer above.
+
+input: User provides number of blocks
+output: Number of "leftover" blocks
+
+Clarifications:
+- Should the solution expect only positive integers?
+- Can the user specify "0" blocks?
+- If the number of blocks exactly fills x layers of
+    the tower, should I say the leftover is 0?
+- The minimum number of blocks needed in layer 2 is 4,
+    but it could potentially be constructed with 5 or 6 blocks.
+    Should the solution account for this?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Step 2: Examples and Test Cases
+
+Provided by the problem:
+    print(calculate_leftover_blocks(0) == 0)  # True
+    print(calculate_leftover_blocks(1) == 0)  # True
+    print(calculate_leftover_blocks(2) == 1)  # True
+    print(calculate_leftover_blocks(4) == 3)  # True
+    print(calculate_leftover_blocks(5) == 0)  # True
+    print(calculate_leftover_blocks(6) == 1)  # True
+    print(calculate_leftover_blocks(14) == 0) # True
+
+Notes:
+- Layers are built as simple as possible
+- If you have exactly enough blocks to build the final layer, output "0"
+- User can input "0"; output = "0"
+- Tests only include "0" and positive integers as input
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Step 3: Data Structures
+- A data structure, like list or dictionary, may or may not be necessary here
+- A list to keep track of the number of blocks in each layer may be useful.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Step 4:
+- Accept input from the user specifying the number of blocks available.
+- Create a variable to store the number of blocks used in the tower.
+    - Calculate the number of blocks a new layer takes (1, 4, 9, etc.)
+    - Add this number to the variable
+    - Repeat
+        - If this causes the variable to exceed
+            the input, remove the most recent layer
+- Output the difference between our variable and the input.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Step 5: Implement a Solution in Code
+- Store allowed number of blocks as an integer
+- Store a list with the number of blocks used at each level of the tower
+- Use a while loop to add levels to the tower
+    - While loop iterates as long as the number of blocks
+        used so far is less than the total allowance
+    - If we add too many blocks, remove the most recent level of
+        the tower with an if statement outside the while loop
+- Return the difference between the number of blocks allowed and used
