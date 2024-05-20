@@ -1,0 +1,216 @@
+PROBLEM:
+    Write a program that allows the user to play a game of
+    Tic-Tac-Toe, this encapsulates many sub-problems:
+        + Perform start-up
+        + Ability to initialize empty board-state
+        + Ability to display board-state to player
+        + Collecting input from the user to mark a square on the board
+            + Control whether the user or opponent is able to input
+
+        + Collecting input for opponent to mark a square on the board
+            + Initialize and manage computer choice space
+                during one-player mode
+
+        + Update board-state using input from user or opponent
+        + Determine if a board-state is winning for user,
+            winning for opponent, or tied, and display that status
+            + Define repeatable tests for program to see if user
+                or opponent has achieved victory
+            + Define test for tying the game
+            + Display victory status
+
+        + Repeat the actions of displaying the board-state, collecting
+            input from the user and opponent, updating board-state,
+            checking for and displaying win/loss/tie
+        + Ability for user to start a new game without restarting the program
+        + Perform shut-down
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+STEP1: Understand the Problem
+"Start-Up"
+    + Greet user and inform of basic program concept/function
+    + Collect input for whether user plays as "O" or "X"
+    + Collect input for whether to run in single-player or two-player mode
+
+"Initialize Board-State"
+    + Create CONSTANTS in code to aid initialization process
+    + Create code structures to initialize board-state data
+
+"Display Board-State"
+    + Interpolate board-state data out of non-string formats
+    + Display interpolated data
+
+"Collect User Input"
+    + Receive raw input from user
+    + Ensure quality input so that the program does not
+        behave in unexpected ways down the line
+    "Manage Turns"
+        + Establish turn order depending on whether user is "O" or "X"
+        + When user's turn, user inputs
+        + When opponent's turn, opponent inputs
+
+"Collect Opponent Input"
+    IF two-player mode:
+    ####"Collect User Input"
+
+    IF one-player mode:
+    {
+    "Manage Computer Choice-Space"
+        + During "Initialize Board-State", also initialize
+            choice-space for computer opponent.
+        + When a move is made by user or computer, update
+            choice-space to optimize computer strategy
+    }
+    + Provide randomized input based off weights in choice-space
+
+"Update Board-State"
+    + Interpolate user and opponent inputs
+    + Update board-state data using interpolated inputs
+    ####"Display Board-State"
+
+"Check Victory Conditions"
+    {
+    "Define User Victory Test"
+        IF user marks entire row
+        OR
+        IF user marks entire column
+        OR
+        IF user marks entire diagonal:
+        + Store the fact that the user is the victor
+    }
+    {
+    "Define Opponent Victory Test"
+        ####"Define User Victory Test" but for opponent instead of user
+    }
+    {
+    "Define Tie"
+        IF 9 moves made between user and opponent
+        AND
+        IF there's no victor:
+        + Store the fact that the game is tied
+    }
+    IF there is a victor
+    OR
+    IF game is tied:
+    {
+    "Display Victory Status"
+        IF there is a victor:
+        + Display who the victor is
+        + Call out to the user which row, column, or diagonal
+            earned them or their opponent the victory
+
+        IF game is tied:
+        + Display that game is tied
+    }
+    ####"New Game Functionality"
+
+"Repeat Core Game Loop"
+    + Create recursive or looping code structure allowing program
+        to repeatedly execute the above steps from "Display Board-State"
+        through "Check Victory Conditions"
+    + Constantly be vigilant for if the user wants to exit this core loop
+        IF in two-player mode:
+        + Also be vigilant for opponent input to this effect
+
+"New Game Functionality"
+    + Create recursive or looping code structure allowing program
+        to repeatedly execute the above steps from "Start-Up"
+        through "Repeat Core Game Loop"
+    IF there is a victor
+    OR
+    IF game is tied
+    OR
+    IF user wants to quit:
+    + Exit core game loop
+    + Ask user if they want to play another game
+        IF user wants to play another game:
+        + Begin again from "Start-Up", but the user doesn't need
+            to be greeted or informed about the program
+
+"Shut-Down"
+    IF user doesn't want to play again:
+    + Exit "New Game Functionality" loop
+    + Farewell to user
+
+
+INPUT: User provides control inputs to the program
+OUTPUT: Board-state display, game status updates, menu navigation
+
+CLARIFICATIONS:
++ No further clarifications at this time
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+STEP2: Examples and Test Cases
+"Start-Up"
+    + Insure that variables for game mode (single-player/two-player,
+        and "O"/"X") are being stored properly
+
+"Initialize Board-State"
+    + Insure that initialization can generate the
+        data structures needed for a new board
+    + Insure that re-initialization works using manually messed-up boards
+
+"Display Board-State"
+    + Check that data is being interpolated correctly
+
+"Collect User Input"
+    + Test input quality assurance
+
+    "Manage Turns"
+        + Insure that opponent acts before user if user is "X"
+
+"Collect Opponent Input"
+    ####"Collect User Input"
+
+    "Manage Computer Choice-Space"
+        + Insure choice-space is updating properly
+
+    + Test computer input for randomness
+
+"Update Board-State"
+    + Check that data is being interpolated correctly
+
+"Check Victory Conditions
+
+    "Define User Victory Test"
+        + Insure conditions are triggered correctly
+
+    "Define Opponent Victory Test"
+        ####"Define User Victory Test" but for opponent
+
+    "Define Tie"
+        + Insure ties are detected correctly
+
+    "Display Victory Status"
+        + Insure that the correct victory status is displayed
+
+    ####"New Game Functionality"
+
+"Repeat Core Game Loop"
+    + Check that looping structures don't end early or go on infintely
+    + Check that "quit" commands are being listend for properly
+
+"New Game Functionality"
+    + Check that looping structures don't end early or go on infinitely
+    + Insure that user's quit choice is being stored properly
+
+"Shut-Down"
+    N/A
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+STEP3: Data Structures
+    + A dictionary may be helpful for input validation, as it can
+        store various sets of inputs that are allowable at different times
+    + CONSTANT dictionaries can be helpful as references for data during runtime
+    + The board-state could be represented as a list
+        + Each row could be a sublist in the board-state list
+            + Each element of a sublist could be a list so that
+                mutating the board-state updates the display list
+    + A separate list that is more friendly for display may be helpful
+        + Each element is a sublist ready to be joined and printed
+            + Some elements of some sublists will be copies of the
+                lowest-level lists in the board-state list
+    + The computer choice space is a list of choice weights
